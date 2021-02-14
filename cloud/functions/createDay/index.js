@@ -3,17 +3,14 @@ cloud.init();
 
 exports.main = async (event) => {
   const db = cloud.database();
-  const _ = db.command;
-  const zoneTable = db.collection('zone');
-  const { dayName, targetDay, zoneId, isLunar } = event;
+  const dayTable = db.collection('day');
+  const { dayName, dayValue } = event;
   const { openId } = event.userInfo;
   console.log('event', event);
 
   if (typeof dayName !== 'string'
     || !dayName
-    || !targetDay instanceof Date
-    || typeof zoneId !== 'string'
-    || !zoneId
+    || !dayValue
   ) {
     return { code: 4000 };
   }
@@ -27,32 +24,26 @@ exports.main = async (event) => {
       throw new Error('内容含有违法违规内容');
     }
 
-    const createTime = new Date();
-    const timeMs = createTime.getTime();
-
-    const { stats: { updated } } = await zoneTable.where({
-      _id: _.eq(zoneId),
-      hostOpenId: _.eq(openId),
-    }).update({
-      data: {
-        days: _.push([{
-          _id: `${zoneId}_${timeMs}`,
-          dayName,
-          targetDay,
-          active: true,
-          isLunar: Boolean(isLunar),
-          createTime: new Date(),
-          updateTime: new Date(),
-        }]),
-        updateTime: new Date(),
-      }
-    });
-    if (updated !== 1) {
-      throw new Error('更新失败');
+    const reqData = {
+      hostOpenId: openId,
+      dayName,
+      dayValue,
+      active: true,
+      createTime: new Date(),
+      updateTime: new Date(),
     }
+    console.log(reqData);
+
+    await dayTable.add({
+      data: reqData
+    });
     return { code: 2000 };
   } catch (e) {
+    // {"errCode":-502001,"errMsg":"云资源数据库错误：数据库请求失败 "}
     console.log(e);
+    if (typeof e === 'object' && e.errCode === -502001) {
+      return { code: 5001, msg: e };
+    }
     return { code: 5000, msg: e };
   }
 }

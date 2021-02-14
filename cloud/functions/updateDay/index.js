@@ -4,21 +4,28 @@ cloud.init();
 exports.main = async (event) => {
   const db = cloud.database();
   const _ = db.command;
-  const zoneTable = db.collection('zone');
-  const { zoneId } = event;
+  const dayTable = db.collection('day');
+  const { dayId, dayName, targetDay } = event;
   const { openId } = event.userInfo;
+  console.log('event', event);
 
-  if (typeof zoneId !== 'string' || !zoneId) {
+  if (typeof dayId !== 'string'
+    || !dayId
+    || typeof dayName !== 'string'
+    || !dayName
+    || !targetDay
+  ) {
     return { code: 4000 };
   }
 
   try {
-    const { stats: { updated } } = await zoneTable.where({
+    const { stats: { updated } } = await dayTable.where({
       _id: _.eq(zoneId),
-      hostOpenId: _.neq(openId),
+      hostOpenId: _.eq(openId),
     }).update({
       data: {
-        listeners: _.pull(openId),
+        dayName,
+        targetDay,
         updateTime: new Date(),
       }
     });

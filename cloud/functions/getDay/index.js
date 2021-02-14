@@ -14,19 +14,23 @@ exports.main = async (event) => {
   }
 
   try {
-    const { stats: { updated } } = await dayTable.where({
-      _id: _.eq(zoneId),
-      hostOpenId: _.eq(openId),
-    }).update({
-      data: {
-        active: false,
-        updateTime: new Date(),
-      }
-    });
-    if (updated !== 1) {
-      throw new Error('更新失败');
+    const { data } = await dayTable.where({
+      _id: _.eq(dayId)
+    }).get();
+    console.log('data', data);
+
+    if (Array.isArray(data) && data.length > 0) {
+      return {
+        code: 2000,
+        data: {
+          ...data[0],
+          isHost: data[0].hostOpenId === openId,
+        },
+      };
+    } else {
+      console.log('数据库错误');
+      return { code: 5000 };
     }
-    return { code: 2000 };
   } catch (e) {
     console.log(e);
     return { code: 5000, msg: e };
