@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
-import Taro, { Config } from '@tarojs/taro'
+import { Component } from 'react';
+import Taro from '@tarojs/taro';
 
-import './app.less'
+import './app.less';
 
 class App extends Component {
 
@@ -10,12 +10,6 @@ class App extends Component {
       Taro.cloud.init()
     }
   }
-
-  componentDidShow () {}
-
-  componentDidHide () {}
-
-  componentDidCatchError () {}
 
   // this.props.children 是将要会渲染的页面
   render () {

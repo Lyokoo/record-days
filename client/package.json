@@ -9,8 +9,8 @@
     "css": "less"
   },
   "scripts": {
-    "build:weapp": "taro build --type weapp",
-    "dev:weapp": "npm run build:weapp -- --watch"
+    "build": "taro build --type weapp",
+    "dev": "yarn build -- --watch"
   },
   "author": "",
   "license": "MIT",
@@ -18,10 +18,12 @@
     "@babel/runtime": "^7.7.7",
     "@tarojs/cli": "3.0.24",
     "@tarojs/components": "3.0.24",
+    "@tarojs/react": "3.0.24",
     "@tarojs/runtime": "3.0.24",
     "@tarojs/taro": "3.0.24",
-    "lodash": "4.17.15",
-    "@tarojs/react": "3.0.24",
+    "calendar": "github:pithyone/calendar.js",
+    "classcat": "^4.1.0",
+    "lodash.findindex": "^4.6.0",
     "react": "^16.10.0",
     "react-dom": "^16.10.0"
   },
@@ -29,17 +31,17 @@
     "@babel/core": "^7.8.0",
     "@tarojs/mini-runner": "3.0.24",
     "@tarojs/webpack-runner": "3.0.24",
+    "@types/react": "^16.0.0",
     "@types/webpack-env": "^1.13.6",
+    "@typescript-eslint/eslint-plugin": "^2.x",
+    "@typescript-eslint/parser": "^2.x",
     "babel-preset-taro": "3.0.24",
     "eslint": "^6.8.0",
     "eslint-config-taro": "3.0.24",
-    "stylelint": "9.3.0",
-    "@typescript-eslint/parser": "^2.x",
-    "@typescript-eslint/eslint-plugin": "^2.x",
-    "typescript": "^3.7.0",
-    "@types/react": "^16.0.0",
-    "eslint-plugin-react": "^7.8.2",
     "eslint-plugin-import": "^2.12.0",
-    "eslint-plugin-react-hooks": "^1.6.1"
+    "eslint-plugin-react": "^7.8.2",
+    "eslint-plugin-react-hooks": "^1.6.1",
+    "stylelint": "9.3.0",
+    "typescript": "^3.7.0"
   }
 }

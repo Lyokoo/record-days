@@ -1,3 +1,5 @@
+const path = require('path');
+
 const config = {
   projectName: 'record_days',
   date: '2021-2-4',

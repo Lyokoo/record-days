@@ -1,0 +1,37 @@
+@import '../../../assets/styles/color.less';
+
+.home-sk__list {
+  border-bottom: 1PX solid @border;
+}
+
+.home-sk__item {
+  box-sizing: border-box;
+  padding: 12px 16px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+
+  &:not(:last-child) {
+    &::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      left: 16px;
+      bottom: 0;
+      height: 1PX;
+      background-color: @border;
+    }
+  }
+}
+
+.home-sk__item-title {
+  height: 20px;
+  width: 200px;
+}
+
+.home-sk__item-day {
+  height: 20px;
+  width: 150px;
+}

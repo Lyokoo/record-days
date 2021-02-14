@@ -1,0 +1,99 @@
+@import '../../assets/styles/color.less';
+@import '../../assets/styles/mixins.less';
+
+.day-editor {
+  box-sizing: border-box;
+  padding: 30px 16px 48px;
+}
+
+.form__item {
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.form__title {
+  box-sizing: border-box;
+  color: @text;
+  padding: 8px 0;
+}
+
+.form__content {
+  box-sizing: border-box;
+  height: 48px;
+  overflow: hidden;
+  border-top: 1PX solid @border;
+  border-bottom: 1PX solid @border;
+}
+
+.day-editor__day-name {
+  color: @text;
+  height: 100%;
+  width: 100%;
+}
+
+.day-editor__placeholder {
+  color: @desc;
+}
+
+.day-editor__day-container {
+  display: flex;
+  height: 100%;
+}
+
+.day-editor__lunar-wrap {
+  width: 70px;
+  height: 100%;
+  box-sizing: border-box;
+  border-right: 1PX solid @border;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    background: url(../../assets/images/right-arrow.svg) center/contain no-repeat;
+    pointer-events: none;
+  }
+}
+
+.day-editor__lunar {
+  width: 100%;
+  height: 46px;
+  display: flex;
+  align-items: center;
+}
+
+.day-editor__day-wrap {
+  height: 100%;
+  flex: 1 1 auto;
+}
+
+.day-editor__day {
+  height: 46px;
+  width: 100%;
+  box-sizing: border-box;
+  padding-left: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.day-editor__save {
+  margin: 40px auto 0;
+  width: 150px;
+  height: 36px;
+  font-size: 16px;
+  background-color: @theme;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+
+  &:active {
+    background-color: @theme-light;
+  }
+}

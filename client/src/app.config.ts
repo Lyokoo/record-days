@@ -1,12 +1,13 @@
 export default {
   pages: [
-    'pages/HomePage/index'
+    'pages/Home/index',
+    'pages/DayEditor/index',
   ],
   window: {
     backgroundTextStyle: 'light',
-    navigationBarBackgroundColor: '#fff',
     navigationBarTitleText: ' ',
-    navigationBarTextStyle: 'black'
+    navigationBarTextStyle: 'black',
+    navigationBarBackgroundColor: '#f8f8f8',
   },
   cloud: true
 }

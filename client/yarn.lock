@@ -3249,6 +3249,10 @@ cacheable-request@^6.0.0:
     normalize-url "^4.1.0"
     responselike "^1.0.2"
 
+"calendar@github:pithyone/calendar.js":
+  version "1.0.0"
+  resolved "https://codeload.github.com/pithyone/calendar.js/tar.gz/25673850f452c6305bdf57dcf618ecde6ae2f84f"
+
 call-bind@^1.0.0, call-bind@^1.0.2:
   version "1.0.2"
   resolved "https://bnpm.byted.org/call-bind/-/call-bind-1.0.2.tgz#b1d4e89e688119c3c9a903ad30abb2f6a919be3c"
@@ -3551,6 +3555,11 @@ class-utils@^0.3.5:
     define-property "^0.2.5"
     isobject "^3.0.0"
     static-extend "^0.1.1"
+
+classcat@^4.1.0:
+  version "4.1.0"
+  resolved "https://bnpm.byted.org/classcat/-/classcat-4.1.0.tgz#e8fd8623e5625187b58adf49bb669a13b6c520f4"
+  integrity sha1-6P2GI+ViUYe1it9Ju2aaE7bFIPQ=
 
 classnames@^2.2.5:
   version "2.2.6"
@@ -8168,6 +8177,11 @@ lodash.debounce@^4.0.8:
   resolved "https://bnpm.byted.org/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
   integrity sha1-gteb/zCmfEAF/9XiUVMArZyk168=
 
+lodash.findindex@^4.6.0:
+  version "4.6.0"
+  resolved "https://bnpm.byted.org/lodash.findindex/-/lodash.findindex-4.6.0.tgz#a3245dee61fb9b6e0624b535125624bb69c11106"
+  integrity sha1-oyRd7mH7m24GJLU1ElYku2nBEQY=
+
 lodash.sortby@^4.7.0:
   version "4.7.0"
   resolved "https://bnpm.byted.org/lodash.sortby/-/lodash.sortby-4.7.0.tgz#edd14c824e2cc9c1e0b0a1b42bb5210516a42438"
@@ -8177,11 +8191,6 @@ lodash.toarray@^4.4.0:
   version "4.4.0"
   resolved "https://bnpm.byted.org/lodash.toarray/-/lodash.toarray-4.4.0.tgz#24c4bfcd6b2fba38bfd0594db1179d8e9b656561"
   integrity sha1-JMS/zWsvuji/0FlNsRedjptlZWE=
-
-lodash@4.17.15:
-  version "4.17.15"
-  resolved "https://bnpm.byted.org/lodash/-/lodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
-  integrity sha1-tEf2ZwoEVbv+7dETku/zMOoJdUg=
 
 lodash@4.17.20, "lodash@4.6.1 || ^4.16.1", lodash@^4.0.0, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.0, lodash@^4.3.0, lodash@~4.17.10:
   version "4.17.20"
