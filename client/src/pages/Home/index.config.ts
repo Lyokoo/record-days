@@ -1,3 +1,3 @@
 export default {
-  navigationBarTitleText: '记记日子',
+  navigationBarTitleText: '数数日子',
 }

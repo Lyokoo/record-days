@@ -19,7 +19,7 @@
 		"coverView": true,
 		"showShadowRootInWxmlPanel": true,
 		"scopeDataCheck": false,
-		"checkSiteMap": true,
+		"checkSiteMap": false,
 		"uploadWithSourceMap": true,
 		"compileHotReLoad": false,
 		"useMultiFrameRuntime": true,

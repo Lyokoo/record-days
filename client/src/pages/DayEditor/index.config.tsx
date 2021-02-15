@@ -1,5 +1,5 @@
 export default {
-  navigationBarTitleText: '编辑日子',
+  navigationBarTitleText: ' ',
   usingComponents: {
     'date-picker': '../../components/date-picker',
   },

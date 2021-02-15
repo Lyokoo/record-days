@@ -2,6 +2,7 @@ export default {
   pages: [
     'pages/Home/index',
     'pages/DayEditor/index',
+    'pages/DayDetail/index',
   ],
   window: {
     backgroundTextStyle: 'light',

@@ -5,7 +5,7 @@ exports.main = async (event) => {
   const db = cloud.database();
   const _ = db.command;
   const dayTable = db.collection('day');
-  const { dayId, dayName, targetDay } = event;
+  const { dayId, dayName, dayTop, dayValue } = event;
   const { openId } = event.userInfo;
   console.log('event', event);
 
@@ -13,19 +13,20 @@ exports.main = async (event) => {
     || !dayId
     || typeof dayName !== 'string'
     || !dayName
-    || !targetDay
+    || !dayValue
   ) {
     return { code: 4000 };
   }
 
   try {
     const { stats: { updated } } = await dayTable.where({
-      _id: _.eq(zoneId),
+      _id: _.eq(dayId),
       hostOpenId: _.eq(openId),
     }).update({
       data: {
         dayName,
-        targetDay,
+        dayValue,
+        dayTop: Boolean(dayTop),
         updateTime: new Date(),
       }
     });

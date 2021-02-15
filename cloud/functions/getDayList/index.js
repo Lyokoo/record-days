@@ -21,7 +21,7 @@ exports.main = async (event) => {
         data,
       };
     } else {
-      console.log('数据库错误');
+      console.log('未获取到数据');
       return { code: 5000 };
     }
   } catch (e) {

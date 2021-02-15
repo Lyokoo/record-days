@@ -4,6 +4,15 @@
   text-overflow: ellipsis;
 }
 
+.text-clamp(@line:2) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: @line;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+}
+
 .halfBorder(@direction, @color) {
   position: relative;
 
@@ -43,31 +52,5 @@
       height: 100%;
       transform: scaleX(.5);
     }
-  }
-}
-
-.tbBorder(@color) {
-  position: relative;
-  
-  &::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 1PX;
-    // transform: scaleY(.5);
-    background-color: @border;
-  }
-
-  &::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 1PX;
-    // transform: scaleY(.5);
-    background-color: @border;
   }
 }

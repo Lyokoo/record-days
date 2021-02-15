@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import cls from 'classcat';
+import Taro from '@tarojs/taro';
 import { ITouchEvent, View } from '@tarojs/components';
-import { withRootCtx } from '@/components/withRootCtx';
-import { DayValue } from '@/utils/types';
+import { DayItem } from '@/utils/types';
 import { dayValueToLunarString, dayValueToSolarString } from '@/utils/calendarTrans';
-
-import './index.less';
 import Skeleton, { SkeletonType } from '@/components/Skeleton';
 
-type DayList = {
-  _id: string;
-  dayName: string;
-  dayValue: DayValue;
-}[];
+import './index.less';
+
+type DayList = DayItem[];
 
 function Home() {
   const [list, setList] = useState<DayList>([]);
@@ -19,11 +16,10 @@ function Home() {
 
   const getDayList = async () => {
     try {
-      wx.showLoading({ title: '获取中..', mask: true });
       const { result } = await wx.cloud.callFunction({
         name: 'getDayList',
       });
-      console.log('result', result);
+      console.log('getDayList', result);
       const { code, data } = result || {};
       if (code === 2000) {
         setList(data);
@@ -32,9 +28,6 @@ function Home() {
       throw new Error(`code: ${code}`);
     } catch (e) {
       console.log(e);
-    } finally {
-      wx.hideLoading();
-      setLoaded(true);
     }
   }
 
@@ -43,9 +36,40 @@ function Home() {
     wx.navigateTo({ url: '/pages/DayEditor/index' });
   }
 
+  const onJumpDetail = (item: DayItem) => {
+    wx.navigateTo({
+      url: `/pages/DayDetail/index?dayItem=${encodeURIComponent(JSON.stringify(item))}`,
+    });
+  }
+
   useEffect(() => {
-    getDayList();
+    (async () => {
+      try {
+        wx.showLoading({ title: '获取中..', mask: true });
+        await getDayList();
+      } catch (e) {
+        //
+      } finally {
+        wx.hideLoading();
+        setLoaded(true);
+      }
+    })();
   }, []);
+
+  useEffect(() => {
+    const handler = () => {
+      getDayList();
+    }
+
+    Taro.eventCenter.on('getDayListEvent', handler);
+    return () => {
+      Taro.eventCenter.off('getDayListEvent', handler);
+    }
+  }, []);
+
+  const finalList = useMemo(() => {
+    return [...list.filter(v => v?.dayTop), ...list.filter(v => !v?.dayTop)];
+  }, [list]);
 
   return (
     <View className="home">
@@ -58,12 +82,19 @@ function Home() {
           {Array.isArray(list) && list.length
             ? (
               <View className="home__list">
-                {list.map(item => {
-                  const { dayValue, dayName, _id } = item || {};
+                {finalList.map(item => {
+                  const { dayValue, dayName, _id, dayTop } = item || {};
                   const { isLunarCalendar } = dayValue || {};
                   const dayString = isLunarCalendar ? dayValueToLunarString(dayValue) : dayValueToSolarString(dayValue);
                   return (
-                    <View className="home__item" key={_id}>
+                    <View
+                      className={cls([
+                        "home__item",
+                        { "is-top" : dayTop }
+                      ])}
+                      key={_id}
+                      onClick={() => onJumpDetail(item)}
+                    >
                       <View className="home__item-title">{dayName}</View>
                       <View className="home__item-day">{dayString}</View>
                     </View>
@@ -78,4 +109,4 @@ function Home() {
   );
 }
 
-export default withRootCtx(Home);
+export default Home;

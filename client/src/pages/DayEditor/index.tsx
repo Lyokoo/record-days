@@ -1,9 +1,12 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import Taro from '@tarojs/taro';
 import { BaseEventOrig, Input, Picker, View } from '@tarojs/components';
 import { InputProps } from '@tarojs/components/types/Input';
 import { default as calendarUtils } from 'calendar';
-import { DayValue } from '@/utils/types';
+import { DayItem, DayValue } from '@/utils/types';
 import { dayValueToLunarString, dayValueToSolarString, lunarCalendarToValue, solarCalendarToValue } from '@/utils/calendarTrans';
+import Button, { ButtonType } from '@/components/Button';
+import { QueryProps, withQuery } from '@/components/withQuery';
 
 import './index.less';
 
@@ -19,9 +22,21 @@ function Form(props: { title: string; children?: React.ReactNode }) {
   );
 }
 
-export default function DayEditor() {
-  const [dayName, setDayName] = useState('');
+function DayEditor(props: QueryProps) {
+  const { query } = props;
+  const dayItem = useMemo(() => {
+    return query?.dayItem ? JSON.parse(query?.dayItem) : undefined;
+  }, [query?.dayItem]) as DayItem;
+  const { _id: dayId, dayTop } = dayItem || {};
+
+  const [dayName, setDayName] = useState(() => {
+    return dayItem ? dayItem?.dayName : '';
+  });
+
   const [dayValue, setDayValue] = useState<DayValue>(() => {
+    if (dayItem) {
+      return dayItem?.dayValue ?? {};
+    }
     const today = new Date();
     return {
       isLunarCalendar: false,
@@ -47,12 +62,12 @@ export default function DayEditor() {
 
   const onLunarChange = (event: any) => {
     const v = event?.detail?.value;
-    const { year, month, day, isLeapMonth } = dayValue || {};
-    if (v == '1') {
+    const { year, month, day, isLeapMonth, isLunarCalendar } = dayValue || {};
+    if (v == '1' && !isLunarCalendar) {
       const lunarCalendar = calendarUtils.solar2lunar(year, month, day);
       const lunarDayValue = lunarCalendarToValue(lunarCalendar);
       setDayValue(lunarDayValue);
-    } else {
+    } else if (v == '0' && isLunarCalendar) {
       const solarCalendar = calendarUtils.lunar2solar(year, month, day, isLeapMonth);
       const solarDayValue = solarCalendarToValue(solarCalendar);
       setDayValue(solarDayValue);
@@ -62,16 +77,15 @@ export default function DayEditor() {
   const onDayChange = (event: any) => {
     const v = event?.detail?.value;
     setDayValue(v);
-    console.log('dayValue', v);
   }
 
-  const onSaveDay = async () => {
+  const createDay = async () => {
     if (!dayName || !dayValue) {
       wx.showToast({ title: '请填写完整', icon: 'error', duration: 1000 });
       return;
     }
 
-    wx.showLoading({ title: '保存中..', mask: true });
+    wx.showLoading({ title: '创建中..', mask: true });
     try {
       const { result } = await wx.cloud.callFunction({
         name: 'createDay',
@@ -80,16 +94,72 @@ export default function DayEditor() {
       const { code } = result || {};
       if (code === 2000) {
         wx.hideLoading();
-        wx.showToast({ title: '保存成功', icon: 'success', mask: true });
+        wx.showToast({ title: '创建成功', icon: 'success', mask: true });
+        
+        // 通知
+        Taro.eventCenter.trigger('getDayListEvent');
+        Taro.eventCenter.trigger('getDayEvent');
+        setTimeout(() => {
+          wx.navigateBack();
+        }, 1000);
         return;
       }
       throw new Error(`code: ${code}`);
     } catch (e) {
       console.log(e);
       wx.hideLoading();
-      wx.showToast({ title: '保存失败', icon: 'error', mask: true });
+      wx.showToast({ title: '创建失败', icon: 'error', mask: true });
     }
   }
+
+  const updateDay = async () => {
+    if (!dayName || !dayValue) {
+      wx.showToast({ title: '请填写完整', icon: 'error', duration: 1000 });
+      return;
+    }
+
+    wx.showLoading({ title: '修改中..', mask: true });
+    try {
+      const { result } = await wx.cloud.callFunction({
+        name: 'updateDay',
+        data: { dayId, dayName, dayValue, dayTop },
+      });
+      const { code } = result || {};
+      if (code === 2000) {
+        wx.hideLoading();
+        wx.showToast({ title: '修改成功', icon: 'success', mask: true });
+
+        // 通知
+        Taro.eventCenter.trigger('getDayListEvent');
+        Taro.eventCenter.trigger('getDayEvent');
+        setTimeout(() => {
+          wx.navigateBack();
+        }, 1000);
+        return;
+      }
+      throw new Error(`code: ${code}`);
+    } catch (e) {
+      console.log(e);
+      wx.hideLoading();
+      wx.showToast({ title: '修改失败', icon: 'error', mask: true });
+    }
+  }
+
+  const onSaveDay = async () => {
+    if (dayId) {
+      updateDay();
+    } else {
+      createDay();
+    }
+  }
+
+  useEffect(() => {
+    if (dayId) {
+      wx.setNavigationBarTitle({ title: '编辑日子' });
+    } else {
+      wx.setNavigationBarTitle({ title: '创建日子' });
+    }
+  });
 
   return (
     <View className="day-editor">
@@ -100,7 +170,7 @@ export default function DayEditor() {
           onInput={onInputChange}
           placeholder="输入日子名称，例如：“👩 妈妈的生日”"
           placeholderClass="day-editor__placeholder"
-          maxlength={20}
+          maxlength={50}
         />
       </Form>
       <Form title="📅 日期">
@@ -125,7 +195,11 @@ export default function DayEditor() {
           </View>
         </View>
       </Form>
-      <View className="day-editor__save" onClick={onSaveDay}>保存</View>
+      <Button type={ButtonType.Major} onClick={onSaveDay} className="day-editor__save">
+        {dayId ? '保存' : '创建'}
+      </Button>
     </View >
   );
 }
+
+export default withQuery(DayEditor);

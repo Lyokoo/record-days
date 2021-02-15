@@ -15,7 +15,7 @@ exports.main = async (event) => {
 
   try {
     const { stats: { updated } } = await dayTable.where({
-      _id: _.eq(zoneId),
+      _id: _.eq(dayId),
       hostOpenId: _.eq(openId),
     }).update({
       data: {

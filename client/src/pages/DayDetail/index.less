@@ -1,0 +1,56 @@
+@import '../../assets/styles/color.less';
+@import '../../assets/styles/mixins.less';
+
+.day-detail__header {
+  box-sizing: border-box;
+  padding: 30px 16px;
+  min-height: 310px;
+}
+
+.day-detail__title {
+  text-align: center;
+  font-size: 20px;
+  color: @text;
+  .text-clamp(2);
+}
+
+.day-detail__title-desc {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 16px;
+  color: @desc;
+}
+
+.day-detail__day {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 64px;
+  color: @theme;
+  font-weight: bold;
+}
+
+.day-detail__day-desc {
+  margin-top: 10px;
+  text-align: center;
+  font-size: 16px;
+  color: @desc;
+}
+
+.day-detail__this-year {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 16px;
+  color: @desc;
+}
+
+.day-detail__footer {
+  margin-top: 60px;
+}
+
+.day-detail__btn-1 {
+  margin: 0 auto;
+}
+
+.day-detail__btn-2 {
+  margin: 10px auto 0;
+}

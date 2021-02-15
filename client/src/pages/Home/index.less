@@ -32,7 +32,7 @@
   font-weight: bold;
 
   &:active {
-    background-color: @bg;
+    background-color: @border;
   }
 }
 
@@ -60,6 +60,10 @@
   flex-direction: column;
   justify-content: space-between;
   position: relative;
+
+  &.is-top {
+    background-color: @bg;
+  }
   
   &:not(:last-child) {
     &::after {
@@ -74,16 +78,17 @@
   }
 
   &:active {
-    background-color: @bg;
+    background-color: @border;
   }
 }
 
 .home__item-title {
   font-size: 18px;
   color: @text;
+  .ellipsis();
 }
 
 .home__item-day {
-  font-size: 16px;
+  font-size: 14px;
   color: @desc;
 }
