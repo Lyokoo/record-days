@@ -85,10 +85,35 @@
 .home__item-title {
   font-size: 18px;
   color: @text;
+  width: 250px;
   .ellipsis();
 }
 
 .home__item-day {
+  font-size: 14px;
+  color: @desc;
+}
+
+.home__total-wrap {
+  box-sizing: border-box;
+  padding: 12px 16px;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  position: absolute;
+  right: 0;
+  top: 0;
+  pointer-events: none;
+}
+
+.home__total-day {
+  font-size: 18px;
+  color: @theme;
+}
+
+.home__total-desc {
   font-size: 14px;
   color: @desc;
 }

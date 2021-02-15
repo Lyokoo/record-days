@@ -3,7 +3,7 @@ import cls from 'classcat';
 import Taro from '@tarojs/taro';
 import { ITouchEvent, View } from '@tarojs/components';
 import { DayItem } from '@/utils/types';
-import { dayValueToLunarString, dayValueToSolarString } from '@/utils/calendarTrans';
+import { countDay, dayValueToLunarString, dayValueToSolarString } from '@/utils/calendarTrans';
 import Skeleton, { SkeletonType } from '@/components/Skeleton';
 
 import './index.less';
@@ -68,7 +68,18 @@ function Home() {
   }, []);
 
   const finalList = useMemo(() => {
-    return [...list.filter(v => v?.dayTop), ...list.filter(v => !v?.dayTop)];
+    return [...list.filter(v => v?.dayTop), ...list.filter(v => !v?.dayTop)].map(item => {
+      const { dayValue } = item || {};
+      const { isLunarCalendar } = dayValue || {};
+      const dayString = isLunarCalendar ? dayValueToLunarString(dayValue) : dayValueToSolarString(dayValue);
+      const { totalDay = 0 } = countDay(dayValue) || {};
+
+      return {
+        ...item,
+        dayString,
+        totalDay,
+      };
+    });
   }, [list]);
 
   return (
@@ -83,20 +94,21 @@ function Home() {
             ? (
               <View className="home__list">
                 {finalList.map(item => {
-                  const { dayValue, dayName, _id, dayTop } = item || {};
-                  const { isLunarCalendar } = dayValue || {};
-                  const dayString = isLunarCalendar ? dayValueToLunarString(dayValue) : dayValueToSolarString(dayValue);
+                  const { dayName, _id, dayTop, dayString, totalDay } = item || {};
                   return (
                     <View
                       className={cls([
                         "home__item",
-                        { "is-top" : dayTop }
+                        { "is-top": dayTop }
                       ])}
                       key={_id}
                       onClick={() => onJumpDetail(item)}
                     >
                       <View className="home__item-title">{dayName}</View>
                       <View className="home__item-day">{dayString}</View>
+                      <View className="home__total-wrap">
+                        <View className="home__total-day">{`${totalDay} 天`}</View>
+                      </View>
                     </View>
                   );
                 })}
